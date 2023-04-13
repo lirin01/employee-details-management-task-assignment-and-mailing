@@ -2,8 +2,8 @@ import java.util.HashMap;
 
 public class Employee {
     private GetDetails getDetails=new GetDetails();
-    private String[] admin_options={"MANAGER","MTS","PT"};
-    private String[] manager_options={"MTS","PT"};
+    private String[] ADMIN_OPTIONS={"MANAGER","MTS","PT"};
+    private String[] MANAGER_OPTIONS={"MTS","PT"};
     private View view=new View();
     public void add(OrganizationDetails organization_database,PersonalDetails user_details){
         String first_name= getDetails.name("first name");
@@ -11,7 +11,7 @@ public class Employee {
         long contact_number= getDetails.contactNumber();
         String username=organization_database.getOrganizationName()+organization_database.getId();
         String password= getDetails.password("temporary password");
-        String role= getDetails.role(user_details.getTeamName().equals("ADMINISTRATION")?admin_options:manager_options,user_details.getTeamName());
+        String role= getDetails.role(user_details.getTeamName().equals("ADMINISTRATION")?ADMIN_OPTIONS:MANAGER_OPTIONS,user_details.getTeamName());
         String team_name=getDetails.teamName(user_details.getTeamName().equals("ADMINISTRATION")?organization_database.getTeamDatabase().keySet():null,user_details.getTeamName());
         String email_address=getDetails.mailAddress(organization_database.getMailDatabase().keySet());
 
@@ -155,12 +155,12 @@ public class Employee {
         }
     }
     public void remove(OrganizationDetails organization_database, String username){
-        HashMap<Long, PersonalDetails> personalDetails_database=organization_database.getPersonalDetailsDatabase();
+        HashMap<Long, PersonalDetails> PERSONALDETAILS_DATABASE=organization_database.getPersonalDetailsDatabase();
         boolean switcher=true;
         long client_id= getDetails.id("employee id");
         Long user_id=organization_database.getAuthenticationDatabase().get(username).getEmployeeId();
-        String user_role=personalDetails_database.get(user_id).getRole();
-        String client_role=personalDetails_database.get(client_id).getRole();
+        String user_role=PERSONALDETAILS_DATABASE.get(user_id).getRole();
+        String client_role=PERSONALDETAILS_DATABASE.get(client_id).getRole();
 
 
         while(switcher){
@@ -182,7 +182,7 @@ public class Employee {
                 else if(organization_database.getPositions().get(client_role)<organization_database.getPositions().get(user_role) || (user_role.equals("SUPERADMIN") && client_role.equals("ADMIN"))) // check the position
                 {
                     view.line();
-                    System.out.println("you cannot remove a "+personalDetails_database.get(client_id).getRole());
+                    System.out.println("you cannot remove a "+PERSONALDETAILS_DATABASE.get(client_id).getRole());
                     view.line();
                 }
                 else{
@@ -192,7 +192,7 @@ public class Employee {
                             case 1 ->
                             {
                                 view.line();
-                                personalDetails_database.remove(client_id);
+                                PERSONALDETAILS_DATABASE.remove(client_id);
                                 organization_database.getAuthenticationDatabase().remove(username.replaceAll("\\d","")+client_id);
                                 System.out.println("employee details removed successfully");
                                 view.line();
@@ -221,7 +221,7 @@ public class Employee {
         }
     }
     public void changeAccess(HashMap<Long, PersonalDetails> personal_details_database,Long user_id){
-        PersonalDetails user_details=personal_details_database.get(user_id);
+        PersonalDetails USER_DETAILS=personal_details_database.get(user_id);
         boolean switcher=true;
         boolean inner_switcher=true;
 
@@ -231,7 +231,7 @@ public class Employee {
             if(personal_details_database.get(client_id)!=null) // check the client data in database
             {
                 switcher=false;
-                if(!(personal_details_database.get(client_id).getRole()).equals(user_details.getRole()) && !(personal_details_database.get(client_id).getRole()).equals("SUPERADMIN")) //check roles
+                if(!(personal_details_database.get(client_id).getRole()).equals(USER_DETAILS.getRole()) && !(personal_details_database.get(client_id).getRole()).equals("SUPERADMIN")) //check roles
                 {
                     while(inner_switcher){
                         view.line();
@@ -264,7 +264,7 @@ public class Employee {
                         }
                     }
                 }
-                else if(user_details.getEmployeeId()==client_id) // check the client id and user id are same
+                else if(USER_DETAILS.getEmployeeId()==client_id) // check the client id and user id are same
                 {
                     view.line();
                     System.out.println("access denied");

@@ -2,8 +2,8 @@ public class AdminController {
     private View view=new View();
     private GetDetails getDetails=new GetDetails();
     public void start(OrganizationDetails organization_database, String username) {
-        AuthenticationDetails user_authentication_details=organization_database.getAuthenticationDatabase().get(username);
-        PersonalDetails user_details=organization_database.getPersonalDetailsDatabase().get(user_authentication_details.getEmployeeId());
+        AuthenticationDetails USER_AUTHENTICATION_DETAILS=organization_database.getAuthenticationDatabase().get(username);
+        PersonalDetails USER_DETAILS=organization_database.getPersonalDetailsDatabase().get(USER_AUTHENTICATION_DETAILS.getEmployeeId());
         Admin admin=new Controller();
         int choice=Integer.MIN_VALUE;
         while (choice != 0) {
@@ -19,7 +19,7 @@ public class AdminController {
                     0  logout""");
             choice=getDetails.choice("choice");
             switch (choice) {
-                case 1->admin.profile(organization_database.getPersonalDetailsDatabase(),user_authentication_details,user_details.getEmployeeId(),organization_database.getMailDatabase());
+                case 1->admin.profile(organization_database.getPersonalDetailsDatabase(),USER_AUTHENTICATION_DETAILS,USER_DETAILS.getEmployeeId(),organization_database.getMailDatabase());
                 case 2-> {
                     int inner_choice=Integer.MIN_VALUE;
                     while(inner_choice!=0){
@@ -31,10 +31,10 @@ public class AdminController {
                                 0 back""");
                         inner_choice= getDetails.choice("choice");
                         switch(inner_choice){
-                            case 1->admin.addNewEmployee(organization_database,user_details); //add new employee /
+                            case 1->admin.addNewEmployee(organization_database,USER_DETAILS); //add new employee /
                             case 2->admin.removeEmployee(organization_database,username); //remove employee /
-                            case 3->admin.changeEmployeeRole(organization_database.getPersonalDetailsDatabase(),organization_database.getTeamDatabase().get(user_details.getTeamName()).getTeamMemberList(),user_details.getEmployeeId());
-                            case 4->admin.changeEmployeeAccess(organization_database.getPersonalDetailsDatabase(), user_details.getEmployeeId()); // restrict employee access /
+                            case 3->admin.changeEmployeeRole(organization_database.getPersonalDetailsDatabase(),organization_database.getTeamDatabase().get(USER_DETAILS.getTeamName()).getTeamMemberList(),USER_DETAILS.getEmployeeId());
+                            case 4->admin.changeEmployeeAccess(organization_database.getPersonalDetailsDatabase(), USER_DETAILS.getEmployeeId()); // restrict employee access /
                             case 0->{}
                             default -> {
                                 System.out.println("invalid command");
@@ -61,8 +61,8 @@ public class AdminController {
                         }
                     }
                 }
-                case 5->admin.mail(organization_database.getMailDatabase(),organization_database.getPersonalDetailsDatabase(),user_details.getEmployeeId());
-                case 6->admin.viewYourTeam(organization_database.getPersonalDetailsDatabase(),organization_database.getTeamDatabase().get(user_details.getTeamName()).getTeamMemberList());
+                case 5->admin.mail(organization_database.getMailDatabase(),organization_database.getPersonalDetailsDatabase(),USER_DETAILS.getEmployeeId());
+                case 6->admin.viewYourTeam(organization_database.getPersonalDetailsDatabase(),organization_database.getTeamDatabase().get(USER_DETAILS.getTeamName()).getTeamMemberList());
                 case 0-> {}
                 default ->  {
                     System.out.println("invalid command");

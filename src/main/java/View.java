@@ -104,5 +104,35 @@ public class View {
         System.out.println("Task title  : "+individual_details.getCompletedTaskAssigned().get(b).getTaskTitle());
         System.out.println("Description : "+individual_details.getCompletedTaskAssigned().get(b).getTaskDescription());
     }
+    public void unreadMail(HashMap<Long, PersonalDetails> personal_details_database, Long user_id){
+        for (int i = personal_details_database.get(user_id).getReceivedMail().size(); i > 0; i--) {
+            ReceivedMailDetails unread_mail = personal_details_database.get(user_id).getReceivedMail().pop();
+            System.out.println("From      : " + personal_details_database.get(unread_mail.getReceivedFrom()).getMailId() + "      Date : " + unread_mail.getMailReceivedDate() + "      Time : " + unread_mail.getMailReceivedTime());
+            System.out.println("subject   : " + unread_mail.getSubject());
+            System.out.println("content   : " + unread_mail.getContent());
+            personal_details_database.get(user_id).getInbox().add(unread_mail);
+            line();
+        }
+    }
+    public void inboxMail(HashMap<Long, PersonalDetails> personal_details_database, Long user_id){
+        for (ReceivedMailDetails i : personal_details_database.get(user_id).getInbox()) {
+            System.out.println("From      : " + personal_details_database.get(i.getReceivedFrom()).getMailId() + "      Date : " + i.getMailReceivedDate() + "      Time : " + i.getMailReceivedTime());
+            System.out.println("subject   : " + i.getSubject());
+            System.out.println("content   : " + i.getContent());
+            line();
+        }
+    }
+    public void sentedMail(HashMap<Long, PersonalDetails> personal_details_database, Long user_id){
+        for(SentMailDetails i:personal_details_database.get(user_id).getMailSent()){
+            System.out.print("sent to : | ");
+            for(Long j:i.getSentTo()){
+                System.out.print(personal_details_database.get(j).getMailId()+" | ");
+            }
+            System.out.print("       Date :"+i.getMailReceivedDate()+"       Time :"+i.getMailReceivedTime());
+            System.out.println("\n"+"subject : "+i.getSubject());
+            System.out.println("content : "+i.getContent());
+            line();
+        }
+    }
 }
 

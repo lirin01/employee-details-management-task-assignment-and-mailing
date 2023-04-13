@@ -8,38 +8,38 @@ public class Authentication {
                 String username = getDetails.userName();
                 String password = getDetails.password("password");
                 view.line();
-                OrganizationDetails organization_database = database.get(username.replaceAll("\\d", ""));
-                AuthenticationDetails user_authentication_details = organization_database.getAuthenticationDatabase().get(username);
-                PersonalDetails user_details = organization_database.getPersonalDetailsDatabase().get(user_authentication_details.getEmployeeId());
+                OrganizationDetails ORGANIZATION_DATABASE = database.get(username.replaceAll("\\d", ""));
+                AuthenticationDetails USER_AUTHENTICATION_DETAILS = ORGANIZATION_DATABASE.getAuthenticationDatabase().get(username);
+                PersonalDetails USER_DETAILS = ORGANIZATION_DATABASE.getPersonalDetailsDatabase().get(USER_AUTHENTICATION_DETAILS.getEmployeeId());
                 view.line();
 
-                if(organization_database.getAccessStatus().equals(true)){//check organization access
-                    if (password.equals(user_authentication_details.getPassword())) { // verify password
-                        System.out.println("welcome " + user_details.getFirstName()+ " " + user_details.getSecondName());
-                        if ((user_details.getAccessStatus())) {
-                            switch (user_details.getRole()) { // check employee access
+                if(ORGANIZATION_DATABASE.getAccessStatus().equals(true)){//check organization access
+                    if (password.equals(USER_AUTHENTICATION_DETAILS.getPassword())) { // verify password
+                        System.out.println("welcome " + USER_DETAILS.getFirstName()+ " " + USER_DETAILS.getSecondName());
+                        if ((USER_DETAILS.getAccessStatus())) {
+                            switch (USER_DETAILS.getRole()) { // check employee access
                                 case "MANAGER" -> {
                                     ManagerController managerController = new ManagerController();
-                                    managerController.start(organization_database, username);
+                                    managerController.start(ORGANIZATION_DATABASE, username);
 
                                 }
                                 case "ADMIN" -> {
                                     AdminController adminController=new AdminController();
-                                    adminController.start(organization_database,username);
+                                    adminController.start(ORGANIZATION_DATABASE,username);
                                 }
                                 case "MTS" -> {
 
                                     MTSController mtsController = new MTSController();
-                                    mtsController.start(organization_database,username);
+                                    mtsController.start(ORGANIZATION_DATABASE,username);
                                 }
                                 case "PT" -> {
                                     PTController ptController =new PTController();
-                                    ptController.start(organization_database,username);
+                                    ptController.start(ORGANIZATION_DATABASE,username);
                                 }
                                 case "SUPERADMIN"->
                                 {
                                     SuperAdminController superAdminController=new SuperAdminController();
-                                    superAdminController.start(database,organization_database.getOrganizationName(),username);
+                                    superAdminController.start(database,ORGANIZATION_DATABASE.getOrganizationName(),username);
                                 }
                             }
                         }
